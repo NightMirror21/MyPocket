@@ -1,5 +1,8 @@
 package ru.nightmirror.mypocket.controller;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,13 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.nightmirror.mypocket.service.UserService;
 
 @Controller
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RegistrationController {
 
-    private final UserService userService;
-
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
-    }
+    UserService userService;
 
     @GetMapping("/registration")
     public String registration() {

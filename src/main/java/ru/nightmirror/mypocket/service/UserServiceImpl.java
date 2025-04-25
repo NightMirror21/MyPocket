@@ -1,6 +1,9 @@
 package ru.nightmirror.mypocket.service;
 
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.nightmirror.mypocket.entity.User;
@@ -9,15 +12,12 @@ import ru.nightmirror.mypocket.repository.UserRepository;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public void save(String username, String password) {

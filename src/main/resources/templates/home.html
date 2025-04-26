@@ -3,19 +3,104 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>Главная</title>
+  <title>Home</title>
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
 </head>
 <body>
-<h1>Добро пожаловать, <span sec:authentication="name"></span>!</h1>
 
-<form th:action="@{/logout}" method="post">
+<h1>Welcome, <span sec:authentication="name"></span>!</h1>
+
+<div>
+  <h2>Current Balance</h2>
+  <div class="balance" th:text="${balance}">0.00</div>
+</div>
+
+<div class="form-section">
+  <h3>Add Operation</h3>
+  <form th:action="@{/home}"
+        th:object="${operationForm}"
+        method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <div class="form-row">
+      <div>
+        <label>Amount:
+          <input type="number"
+                 th:field="*{amount}"
+                 step="0.01"
+                 min="0.01"
+                 required />
+        </label>
+        <div th:if="${#fields.hasErrors('amount')}"
+             th:errors="*{amount}">Ошибка</div>
+      </div>
+
+      <div>
+        <label>Description:
+          <input type="text"
+                 th:field="*{description}"
+                 maxlength="255" />
+        </label>
+        <div th:if="${#fields.hasErrors('description')}"
+             th:errors="*{description}">Ошибка</div>
+      </div>
+
+      <div>
+        <label>Type:
+          <select th:field="*{type}" required>
+            <option th:value="${T(ru.nightmirror.mypocket.entity.OperationType).INCOME}">
+              Income
+            </option>
+            <option th:value="${T(ru.nightmirror.mypocket.entity.OperationType).EXPENSE}">
+              Expense
+            </option>
+          </select>
+        </label>
+        <div th:if="${#fields.hasErrors('type')}"
+             th:errors="*{type}">Ошибка</div>
+      </div>
+
+      <div>
+        <button type="submit">Add</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="list-section">
+  <h3>Operations History</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="op : ${operations}">
+      <td th:text="${op.amount}"
+          th:classappend="${op.type == T(ru.nightmirror.mypocket.entity.OperationType).EXPENSE}
+                             ? ' text-red' : ' text-green'">
+      </td>
+      <td th:text="${op.description}">—</td>
+      <td th:text="${op.date.format(
+                       T(java.time.format.DateTimeFormatter)
+                         .ofPattern('yyyy-MM-dd HH:mm')
+                     )}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<form th:action="@{/logout}" method="post" style="display:inline">
   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-  <button type="submit">Выйти</button>
+  <button type="submit">Logout</button>
+</form>
+<form th:action="@{/delete-account}" method="post" style="display:inline">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <button type="submit">Delete Account</button>
 </form>
 
-<form th:action="@{/delete-account}" method="post">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-  <button type="submit">Удалить аккаунт</button>
-</form>
 </body>
 </html>

@@ -1,0 +1,36 @@
+.balance {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.form-section, .list-section {
+    margin-bottom: 40px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+.form-row > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-red {
+    color: red;
+}
+.text-green {
+    color: green;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}

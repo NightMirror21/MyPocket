@@ -35,7 +35,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteByUsername(String username) {
-        userRepository.deleteByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        userRepository.delete(user);
     }
 
     @Override

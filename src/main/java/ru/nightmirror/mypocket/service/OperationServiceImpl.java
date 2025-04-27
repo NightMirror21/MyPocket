@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nightmirror.mypocket.dto.OperationDto;
+import ru.nightmirror.mypocket.entity.Category;
 import ru.nightmirror.mypocket.entity.Operation;
 import ru.nightmirror.mypocket.entity.OperationType;
 import ru.nightmirror.mypocket.entity.User;
+import ru.nightmirror.mypocket.repository.CategoryRepository;
 import ru.nightmirror.mypocket.repository.OperationRepository;
 import ru.nightmirror.mypocket.repository.UserRepository;
 
@@ -20,6 +22,7 @@ public class OperationServiceImpl implements OperationService {
 
     private final OperationRepository opRepo;
     private final UserRepository userRepo;
+    private final CategoryRepository categoryRepo;
 
     @Override
     @Transactional
@@ -38,6 +41,12 @@ public class OperationServiceImpl implements OperationService {
         op.setDescription(dto.getDescription());
         op.setType(dto.getType());
         op.setDate(LocalDateTime.now());
+
+        if (dto.getCategoryId() != null) {
+            Category cat = categoryRepo.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+            op.setCategory(cat);
+        }
 
         opRepo.save(op);
     }

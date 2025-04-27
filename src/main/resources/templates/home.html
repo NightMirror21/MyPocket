@@ -15,6 +15,21 @@
   <div class="balance" th:text="${balance}">0.00</div>
 </div>
 
+<div class="category-section">
+  <h3>Manage Categories</h3>
+  <form th:action="@{/home/categories}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <label>Name:
+      <input type="text" name="name" required maxlength="50"/>
+    </label>
+    <button type="submit">Add Category</button>
+  </form>
+  <ul>
+    <li th:each="cat : ${categories}" th:text="${cat.name}">Category name</li>
+    <li th:if="${#lists.isEmpty(categories)}">No categories</li>
+  </ul>
+</div>
+
 <div class="form-section">
   <h3>Add Operation</h3>
   <form th:action="@{/home}"
@@ -37,12 +52,11 @@
 
       <div>
         <label>Description:
-          <input type="text"
-                 th:field="*{description}"
-                 maxlength="255" />
+          <input type="text" th:field="*{description}"
+                 maxlength="255"/>
         </label>
         <div th:if="${#fields.hasErrors('description')}"
-             th:errors="*{description}">Ошибка</div>
+             th:errors="*{description}"></div>
       </div>
 
       <div>
@@ -57,7 +71,18 @@
           </select>
         </label>
         <div th:if="${#fields.hasErrors('type')}"
-             th:errors="*{type}">Ошибка</div>
+             th:errors="*{type}"></div>
+      </div>
+
+      <div>
+        <label>Category:
+          <select th:field="*{categoryId}">
+            <option th:value="${null}">Без категории</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name}"></option>
+          </select>
+        </label>
       </div>
 
       <div>

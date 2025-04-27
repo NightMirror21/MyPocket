@@ -34,4 +34,7 @@ public class Operation {
 
     @Column(nullable = false)
     private LocalDateTime date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
 }

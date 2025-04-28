@@ -43,6 +43,30 @@
     }
   }
 
+  function saveOperationFormValues() {
+    const amount = document.querySelector('input[name="amount"]').value;
+    const description = document.querySelector('input[name="description"]').value;
+    const type = document.querySelector('select[name="type"]').value;
+    const categoryId = document.querySelector('select[name="categoryId"]').value;
+
+    localStorage.setItem('operationForm.amount', amount);
+    localStorage.setItem('operationForm.description', description);
+    localStorage.setItem('operationForm.type', type);
+    localStorage.setItem('operationForm.categoryId', categoryId);
+  }
+
+  function restoreOperationFormValues() {
+    const amount = localStorage.getItem('operationForm.amount');
+    const description = localStorage.getItem('operationForm.description');
+    const type = localStorage.getItem('operationForm.type');
+    const categoryId = localStorage.getItem('operationForm.categoryId');
+
+    if (amount) document.querySelector('input[name="amount"]').value = amount;
+    if (description) document.querySelector('input[name="description"]').value = description;
+    if (type) document.querySelector('select[name="type"]').value = type;
+    if (categoryId) document.querySelector('select[name="categoryId"]').value = categoryId;
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const categoriesSection = document.getElementById('categoriesSection');
     const toggleBtn = document.getElementById('toggleCategoriesBtn');
@@ -51,6 +75,8 @@
       categoriesSection.style.display = 'block';
       toggleBtn.textContent = 'Скрыть категории';
     }
+
+    restoreOperationFormValues();
   });
 </script>
 
@@ -58,7 +84,8 @@
   <h3>Добавить операцию</h3>
   <form th:action="@{/home}"
         th:object="${operationForm}"
-        method="post">
+        method="post"
+        onsubmit="saveOperationFormValues()">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
     <div class="form-row">
@@ -122,7 +149,7 @@
 
 <div id="categoriesSection" style="display: none;">
   <h3>Настройка категорий</h3>
-  <form th:action="@{/home/categories}" method="post">
+  <form th:action="@{/home/categories}" method="post" onsubmit="saveOperationFormValues()">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <label>Название:
       <input type="text" name="name" required maxlength="50"/>
@@ -138,7 +165,7 @@
   </ul>
 
   <div id="editCategoryForm" style="display: none; margin-top: 10px;">
-    <form th:action="@{/home/categories/update}" method="post">
+    <form th:action="@{/home/categories/update}" method="post" onsubmit="saveOperationFormValues()">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
       <input type="hidden" id="editCategoryId" name="categoryId" />
       <label>Новое название:

@@ -27,9 +27,36 @@
   <ul>
     <li th:each="cat : ${categories}">
       <span th:text="'#' + ${cat.id + ': ' + cat.name}">ID: Название категории</span>
+      <button type="button" onclick="showEditForm(this)" th:data-id="${cat.id}" th:data-name="${cat.name}">Изменить</button>
     </li>
     <li th:if="${#lists.isEmpty(categories)}">Нет категорий</li>
   </ul>
+
+  <div id="editCategoryForm" style="display: none; margin-top: 10px;">
+    <form th:action="@{/home/categories/update}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <input type="hidden" id="categoryId" name="categoryId" />
+      <label>Новое название:
+        <input type="text" id="newName" name="newName" required maxlength="50"/>
+      </label>
+      <button type="submit">Сохранить</button>
+      <button type="button" onclick="hideEditForm()">Отмена</button>
+    </form>
+  </div>
+
+  <script>
+    function showEditForm(button) {
+      const categoryId = button.getAttribute('data-id');
+      const categoryName = button.getAttribute('data-name');
+      document.getElementById('categoryId').value = categoryId;
+      document.getElementById('newName').value = categoryName;
+      document.getElementById('editCategoryForm').style.display = 'block';
+    }
+
+    function hideEditForm() {
+      document.getElementById('editCategoryForm').style.display = 'none';
+    }
+  </script>
 </div>
 
 <div class="form-section">

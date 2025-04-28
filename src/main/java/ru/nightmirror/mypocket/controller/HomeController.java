@@ -66,4 +66,12 @@ public class HomeController {
         categoryService.createCategory(name, user.getUsername());
         return "redirect:/home";
     }
+
+    @PostMapping("/home/categories/update")
+    public String updateCategory(@RequestParam("categoryId") Long categoryId,
+                                @RequestParam("newName") String newName,
+                                @AuthenticationPrincipal UserDetails user) {
+        categoryService.updateCategoryName(categoryId, newName, user.getUsername());
+        return "redirect:/home";
+    }
 }

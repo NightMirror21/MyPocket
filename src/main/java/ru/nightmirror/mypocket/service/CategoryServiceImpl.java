@@ -38,4 +38,21 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new IllegalStateException("User not found"));
         return categoryRepo.findAllByUserOrderByNameAsc(user);
     }
+
+    @Override
+    @Transactional
+    public void updateCategoryName(Long categoryId, String newName, String username) {
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        Category category = categoryRepo.findById(categoryId)
+                .orElseThrow(() -> new IllegalStateException("Category not found"));
+
+        if (!category.getUser().getId().equals(user.getId())) {
+            throw new IllegalStateException("Category does not belong to the user");
+        }
+
+        category.setName(newName);
+        categoryRepo.save(category);
+    }
 }

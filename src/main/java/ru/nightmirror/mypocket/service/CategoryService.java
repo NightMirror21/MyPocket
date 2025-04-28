@@ -8,4 +8,6 @@ public interface CategoryService {
     void createCategory(String name, String username);
 
     List<Category> getCategories(String username);
+
+    void updateCategoryName(Long categoryId, String newName, String username);
 }

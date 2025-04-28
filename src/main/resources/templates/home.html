@@ -19,7 +19,7 @@
   function showEditForm(button) {
     const categoryId = button.getAttribute('data-id');
     const categoryName = button.getAttribute('data-name');
-    document.getElementById('categoryId').value = categoryId;
+    document.getElementById('editCategoryId').value = categoryId;
     document.getElementById('newName').value = categoryName;
     document.getElementById('editCategoryForm').style.display = 'block';
   }
@@ -140,7 +140,7 @@
   <div id="editCategoryForm" style="display: none; margin-top: 10px;">
     <form th:action="@{/home/categories/update}" method="post">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-      <input type="hidden" id="categoryId" name="categoryId" />
+      <input type="hidden" id="editCategoryId" name="categoryId" />
       <label>Новое название:
         <input type="text" id="newName" name="newName" required maxlength="50"/>
       </label>

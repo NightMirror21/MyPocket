@@ -17,31 +17,35 @@
 
 <div class="category-section">
   <h3>Управление категориями</h3>
-  <form th:action="@{/home/categories}" method="post">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <label>Название:
-      <input type="text" name="name" required maxlength="50"/>
-    </label>
-    <button type="submit">Добавить категорию</button>
-  </form>
-  <ul>
-    <li th:each="cat : ${categories}">
-      <span th:text="'#' + ${cat.id + ': ' + cat.name}">ID: Название категории</span>
-      <button type="button" onclick="showEditForm(this)" th:data-id="${cat.id}" th:data-name="${cat.name}">Изменить</button>
-    </li>
-    <li th:if="${#lists.isEmpty(categories)}">Нет категорий</li>
-  </ul>
+  <button type="button" id="toggleCategoriesBtn" onclick="toggleCategories()">Настроить категории</button>
 
-  <div id="editCategoryForm" style="display: none; margin-top: 10px;">
-    <form th:action="@{/home/categories/update}" method="post">
+  <div id="categoriesSection" style="display: none;">
+    <form th:action="@{/home/categories}" method="post">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-      <input type="hidden" id="categoryId" name="categoryId" />
-      <label>Новое название:
-        <input type="text" id="newName" name="newName" required maxlength="50"/>
+      <label>Название:
+        <input type="text" name="name" required maxlength="50"/>
       </label>
-      <button type="submit">Сохранить</button>
-      <button type="button" onclick="hideEditForm()">Отмена</button>
+      <button type="submit">Добавить категорию</button>
     </form>
+    <ul>
+      <li th:each="cat : ${categories}">
+        <span th:text="'#' + ${cat.id + ': ' + cat.name}">ID: Название категории</span>
+        <button type="button" onclick="showEditForm(this)" th:data-id="${cat.id}" th:data-name="${cat.name}">Изменить</button>
+      </li>
+      <li th:if="${#lists.isEmpty(categories)}">Нет категорий</li>
+    </ul>
+
+    <div id="editCategoryForm" style="display: none; margin-top: 10px;">
+      <form th:action="@{/home/categories/update}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" id="categoryId" name="categoryId" />
+        <label>Новое название:
+          <input type="text" id="newName" name="newName" required maxlength="50"/>
+        </label>
+        <button type="submit">Сохранить</button>
+        <button type="button" onclick="hideEditForm()">Отмена</button>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -55,6 +59,19 @@
 
     function hideEditForm() {
       document.getElementById('editCategoryForm').style.display = 'none';
+    }
+
+    function toggleCategories() {
+      const categoriesSection = document.getElementById('categoriesSection');
+      const toggleBtn = document.getElementById('toggleCategoriesBtn');
+
+      if (categoriesSection.style.display === 'none') {
+        categoriesSection.style.display = 'block';
+        toggleBtn.textContent = 'Скрыть категории';
+      } else {
+        categoriesSection.style.display = 'none';
+        toggleBtn.textContent = 'Настроить категории';
+      }
     }
   </script>
 </div>

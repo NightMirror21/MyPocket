@@ -66,6 +66,6 @@ public class OperationServiceImpl implements OperationService {
     public List<Operation> getOperations(String username) {
         User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new IllegalStateException("User not found"));
-        return opRepo.findAllByUserOrderByDateDesc(user);
+        return opRepo.findAllByUserWithCategoryOrderByDateDesc(user);
     }
 }

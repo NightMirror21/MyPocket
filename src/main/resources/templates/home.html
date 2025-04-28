@@ -157,6 +157,7 @@
     <tr>
       <th>Сумма</th>
       <th>Описание</th>
+      <th>Категория</th>
       <th>Дата</th>
     </tr>
     </thead>
@@ -167,6 +168,7 @@
                              ? ' text-red' : ' text-green'">
       </td>
       <td th:text="${op.description}">—</td>
+      <td th:text="${op.category != null ? op.category.name : '—'}">—</td>
       <td th:text="${op.date.format(
                        T(java.time.format.DateTimeFormatter)
                          .ofPattern('yyyy-MM-dd HH:mm')

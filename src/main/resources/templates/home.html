@@ -11,7 +11,7 @@
 <h1>С возвращением, <span sec:authentication="name"></span>!</h1>
 
 <div>
-  <h2>Текущий баланс</h2>
+  <h3>Текущий баланс</h3>
   <div class="balance" th:text="${balance}">0.00</div>
 </div>
 
@@ -25,7 +25,9 @@
     <button type="submit">Добавить категорию</button>
   </form>
   <ul>
-    <li th:each="cat : ${categories}" th:text="${cat.name}">Название категории</li>
+    <li th:each="cat : ${categories}">
+      <span th:text="'#' + ${cat.id + ': ' + cat.name}">ID: Название категории</span>
+    </li>
     <li th:if="${#lists.isEmpty(categories)}">Нет категорий</li>
   </ul>
 </div>

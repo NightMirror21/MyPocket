@@ -68,11 +68,23 @@
       if (categoriesSection.style.display === 'none') {
         categoriesSection.style.display = 'block';
         toggleBtn.textContent = 'Скрыть категории';
+        localStorage.setItem('categoriesSectionVisible', 'true');
       } else {
         categoriesSection.style.display = 'none';
         toggleBtn.textContent = 'Настроить категории';
+        localStorage.setItem('categoriesSectionVisible', 'false');
       }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const categoriesSection = document.getElementById('categoriesSection');
+      const toggleBtn = document.getElementById('toggleCategoriesBtn');
+
+      if (localStorage.getItem('categoriesSectionVisible') === 'true') {
+        categoriesSection.style.display = 'block';
+        toggleBtn.textContent = 'Скрыть категории';
+      }
+    });
   </script>
 </div>
 
